@@ -1,4 +1,4 @@
-Happy Mini シミュレータ
+A Gazebo simulator for Happy Mini 
 
 1. Mini 1.0 (2DOF Hand) の起動法
 
