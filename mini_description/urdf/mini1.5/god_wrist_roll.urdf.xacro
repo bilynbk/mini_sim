@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<robot name="wrist_roll" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <!-- Define a number of dimensions using properties -->
+  <!-- <property name="wrist_roll_offset_x" value="0.004" />
+  <property name="wrist_roll_offset_y" value="-0.04" />
+  <property name="wrist_roll_offset_z" value="0.148" /> -->
+  <property name="wrist_roll_offset_x" value="0.0" />
+  <property name="wrist_roll_offset_y" value="0.0" />
+  <property name="wrist_roll_offset_z" value="0.0" />
+
+  <property name="wrist_roll_length" value="0.05" />
+  <property name="wrist_roll_width" value="0.1" />
+  <property name="wrist_roll_height" value="0.07" />
+     
+  <!-- Define the wrist roll -->
+  <macro name="wrist_roll" params="parent name">
+    <joint name="wrist_roll_joint" type="revolute">
+      <origin xyz="${wrist_roll_offset_x} ${wrist_roll_offset_y} ${wrist_roll_offset_z}" rpy="0 0 0" />
+      <axis xyz="1 0 0"/>
+      <limit effort="1.0" lower="${-M_PI/2}" upper="${M_PI/2}" velocity="1.571"/>
+      <parent link="${parent}_link"/>
+      <child link="${name}_link"/>
+    </joint>
+
+    <link name="${name}_link">
+      <inertial>
+        <mass value="0.05" />
+        <origin xyz="0 0 0" />
+        <inertia ixx="0.01" ixy="0.0" ixz="0.0"
+                 iyy="0.01" iyz="0.0"
+                 izz="0.01" />
+      </inertial>
+      <visual>
+	<origin xyz="-0.049 -0.097  -0.465" rpy="${-20*M_PI/180} 0 ${M_PI/2}" />
+	<geometry>
+	  <mesh filename="package://mini_description/meshes/mini1.5/mini2_wrist_roll_module.dae" scale="${mesh_scale} ${mesh_scale} ${mesh_scale}" />
+	</geometry>
+      </visual> 
+      <collision>
+	<origin xyz="0.1 0 0.02" rpy="0 0 0" />
+	<geometry>
+          <box size="${wrist_roll_length} ${wrist_roll_width} ${wrist_roll_height}" />
+	</geometry>
+      </collision> 
+    </link>
+  </macro>
+</robot>

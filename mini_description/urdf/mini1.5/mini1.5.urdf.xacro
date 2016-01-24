@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot name="mini1.5" xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:include filename="$(find mini_description)/urdf/mini1.5/common_properties.urdf.xacro"/>
+  <xacro:include filename="$(find mini_description)/urdf/mini1.5/mini1.5_gazebo.urdf.xacro"/>
+  <xacro:include filename="$(find mini_description)/urdf/mini1.5/base.urdf.xacro" />
+  <xacro:include filename="$(find mini_description)/urdf/mini1.5/torso_lower.urdf.xacro" />
+  <xacro:include filename="$(find mini_description)/urdf/mini1.5/torso_upper.urdf.xacro" />
+  <xacro:include filename="$(find mini_description)/urdf/mini1.5/head.urdf.xacro" />
+  <xacro:include filename="$(find mini_description)/urdf/mini1.5/god_arm_upper.urdf.xacro" />
+  <xacro:include filename="$(find mini_description)/urdf/mini1.5/god_arm_fore.urdf.xacro" />
+  <xacro:include filename="$(find mini_description)/urdf/mini1.5/god_wrist_pitch.urdf.xacro" />
+  <xacro:include filename="$(find mini_description)/urdf/mini1.5/god_wrist_roll.urdf.xacro" />
+  <xacro:include filename="$(find mini_description)/urdf/mini1.5/god_finger_right.urdf.xacro" />
+  <xacro:include filename="$(find mini_description)/urdf/mini1.5/god_finger_left.urdf.xacro" />
+  <xacro:include filename="$(find mini_description)/urdf/mini1.5/lidar.urdf.xacro" />
+  <material name="Red">
+    <color rgba="0.8 0.0 0.0 1.0"/>
+  </material>
+
+
+  <!-- Mini Kobuki base  --> 
+  <base name="base" />
+
+  <!-- Add the Hokuyo lidar -->
+  <lidar name="lidar" parent="base" />
+
+  <!-- Add the torso lower -->
+  <torso_lower name="torso_lower" parent="base" />
+
+  <!-- Add the torso upper -->
+  <torso_upper name="torso_upper" parent="torso_lower" />
+
+  <!-- Add the head -->
+  <head name="head" parent="torso_upper" />
+  
+  <!-- Add the upper arm -->
+  <arm_upper name="arm_upper" parent="torso_upper" />
+
+ <!-- Add the fore arm -->
+  <arm_fore name="arm_fore" parent="arm_upper" />
+
+  <!-- Add the wrist pitch -->
+  <wrist_pitch name="wrist_pitch" parent="arm_fore" />
+
+  <!-- Add the wrist roll -->
+  <wrist_roll  name="wrist_roll" parent="wrist_pitch" />
+
+  <!-- Add the right hand -->
+  <finger_right name="finger_right" parent="wrist_roll" />
+
+  <!-- Add the left hand -->
+  <finger_left name="finger_left" parent="wrist_roll" />
+
+  <!-- Kobuki Gazebo simulation details -->
+  <mini_sim/>
+</robot>

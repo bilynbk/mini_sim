@@ -1,0 +1,25 @@
+<!--
+  Useful for debugging or just viewing the kobuki model/urdf/transform. 
+ -->
+<launch>
+
+  <arg name="urdf_file" default="$(find xacro)/xacro.py '$(find mini_description)/urdf/mini1.0/mini1.0_standalone.urdf.xacro'" />
+  <param name="robot_description" command="$(arg urdf_file)" />
+
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen">
+    <param name="publish_frequency" type="double" value="5.0" />
+  </node>
+
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+    <param name="use_gui" value="true"/>
+    <param name="rate" value="20.0"/>
+  </node>
+  
+  <node name="rviz" pkg="rviz" type="rviz" args="-l -d $(find mini_description)/rviz/model.rviz"/>
+
+  <!-- Run a python script to the send a service call to gazebo_ros to spawn a URDF robot -->
+  <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
+        args="-urdf -model mini -param robot_description"/>
+
+
+</launch>

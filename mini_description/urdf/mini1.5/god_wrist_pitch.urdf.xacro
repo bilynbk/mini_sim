@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<robot name="wrist_pitch" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <!-- Define a number of dimensions using properties -->
+  <property name="wrist_offset_x" value="0.004" />
+  <property name="wrist_offset_y" value="-0.04" />
+  <property name="wrist_offset_z" value="0.148" />
+  <property name="wrist_radius" value="0.025" />
+  <property name="wrist_length" value="0.05" />
+     
+  <!-- Define the wrist pitch -->
+  <macro name="wrist_pitch" params="parent name">
+    <joint name="wrist_pitch_joint" type="revolute">
+      <origin xyz="${wrist_offset_x} ${wrist_offset_y} ${wrist_offset_z}" rpy="0 0 0" />
+      <axis xyz="0 1 0"/>
+      <limit effort="1.0" lower="${-M_PI/2}" upper="${M_PI/2}" velocity="1.571"/>
+      <parent link="${parent}_link"/>
+      <child link="${name}_link"/>
+    </joint>
+
+    <link name="${name}_link">
+      <inertial>
+        <mass value="0.1" />
+        <origin xyz="0 0 0" />
+        <inertia ixx="1.0" ixy="0.0" ixz="0.0"
+                 iyy="1.0" iyz="0.0"
+                 izz="1.0" />
+      </inertial>
+      <visual>
+        <!-- <origin xyz="-0.011 0.0 -0.044" rpy="0 ${M_PI/2} 0" /> -->
+	<origin xyz="-0.049 -0.097  -0.465" rpy="${-20*M_PI/180} 0 ${M_PI/2}" />
+	<geometry>
+	  <mesh filename="package://mini_description/meshes/mini1.5/mini2_wrist_pitch_module.dae" scale="${mesh_scale} ${mesh_scale} ${mesh_scale}" />
+	</geometry>
+	<!-- <material color="yellow"/> -->
+      </visual>
+      <!-- <collision>
+      <origin xyz="0.14 -0.16 0.5" rpy="${M_PI/100} 0 0" />
+      <geometry>
+          <cylinder length="${wrist_length}" radius="${wrist_radius}" />
+      </geometry>
+      </collision> -->
+    </link>
+  </macro>
+</robot>

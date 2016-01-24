@@ -1,0 +1,68 @@
+<launch>
+
+  <!-- <arg name="world_file"  default="$(env TURTLEBOT_GAZEBO_WORLD_FILE)"/> -->
+
+  <arg name="base"      value="$(optenv TURTLEBOT_BASE kobuki)"/> <!-- create, roomba -->
+  <arg name="battery"   value="$(optenv TURTLEBOT_BATTERY /proc/acpi/battery/BAT0)"/>  <!-- /proc/acpi/battery/BAT0 --> 
+  <arg name="gui" default="true"/>
+  <arg name="stacks"    value="$(optenv TURTLEBOT_STACKS hexagons)"/>  <!-- circles, hexagons --> 
+  <arg name="3d_sensor" value="$(optenv TURTLEBOT_3D_SENSOR asus_xtion_pro)"/>  <!-- kinect, asus_xtion_pro --> 
+
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="use_sim_time" value="true"/>
+    <arg name="debug" value="false"/>
+    <arg name="gui" value="$(arg gui)" />
+    <arg name="world_name" value="$(find mini_description)/launch/mini1.0.world"/>
+  </include>
+  
+  <include file="$(find mini_description)/launch/includes/mini1.0.launch.xml">
+    <arg name="base" value="$(arg base)"/>
+    <arg name="stacks" value="$(arg stacks)"/>
+    <arg name="3d_sensor" value="$(arg 3d_sensor)"/>
+  </include>
+  
+
+  <!-- Load joint controller configurations from YAML file to parameter server -->
+  <rosparam file="$(find mini_description)/config/mini1.0_control.yaml" command="load"/>
+
+  <!-- load the controllers -->
+  <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
+        output="screen" ns="/mini" args="joint_state_controller 
+	torso_upper_joint_position_controller head_joint_position_controller 
+	shoulder_joint_position_controller wrist_pitch_joint_position_controller 
+	finger_left_joint_position_controller finger_right_joint_position_controller"/>
+
+  <!-- convert joint states to TF transforms for rviz, etc -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher">
+    <param name="publish_frequency" type="double" value="30.0" />
+    <remap from="/joint_states" to="/mini/joint_states" />
+  </node>
+
+  <!-- Fake laser -->
+  <node pkg="nodelet" type="nodelet" name="laserscan_nodelet_manager" args="manager"/>
+  <node pkg="nodelet" type="nodelet" name="depthimage_to_laserscan"
+        args="load depthimage_to_laserscan/DepthImageToLaserScanNodelet laserscan_nodelet_manager">
+    <param name="scan_height" value="10"/>
+    <param name="output_frame_id" value="/camera_depth_frame"/>
+    <param name="range_min" value="0.45"/>
+    <remap from="image" to="/camera/depth/image_raw"/>
+    <remap from="scan" to="/scan"/>
+  </node>
+
+
+  <!-- Run the Hokuyo laser scanner node -->
+  <param name="/use_sim_time" value="false" />
+  <node name="laser_driver" pkg="urg_node" type="urg_node">
+  <param name="min_ang" value="-1.7" />
+  <param name="max_ang" value="1.7" />
+  <param name="urg_node/calibrate_time" value="true" />
+  <param name="frame_id" value="/base_laser_link" />
+  </node>
+
+  <!-- <node name="rviz" pkg="rviz" type="rviz" args=" -d $(find mini_description)/rviz/model.rviz"/> -->
+
+
+
+</launch>
+
+

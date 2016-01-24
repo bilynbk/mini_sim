@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<robot name="arm_fore" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <!-- Define a number of dimensions using properties -->
+  <property name="arm_fore_offset_x" value="0.0" />
+  <property name="arm_fore_offset_y" value="0" />
+  <property name="arm_fore_offset_z" value="-0.445" />
+  <property name="arm_fore_radius" value="0.009" />
+  <property name="arm_fore_length" value="0.18" />
+     
+  <!-- Define the torso -->
+  <macro name="arm_fore" params="parent name">
+    <joint name="elbow_joint" type="revolute">
+      <origin xyz="${arm_fore_offset_x} ${arm_fore_offset_y} ${arm_fore_offset_z}" rpy="0 0 0" />
+      <axis xyz="0 1 0"/>
+      <limit effort="1.0" lower="${-M_PI/2}" upper="${M_PI/2}" velocity="1.571"/>
+      <parent link="${parent}_link"/>
+      <child link="${name}_link"/>
+    </joint>
+    <link name="${name}_link">
+      <inertial>
+        <mass value="0.1" />
+        <origin xyz="0 0 0" />
+        <inertia ixx="1.0" ixy="0.0" ixz="0.0"
+                 iyy="1.0" iyz="0.0"
+                 izz="1.0" />
+      </inertial>
+
+      <visual>
+        <!-- <origin xyz="-0.01 0 -0.39" rpy="0 ${87.5*M_PI/180} 0" /> -->
+        <origin xyz="-0.065 -0.136  -0.31" rpy="${-17.5*M_PI/180} 0  ${M_PI/2}" />
+	<geometry>
+	  <mesh filename="package://mini_description/meshes/mini1.5/mini2_arm_fore_module.dae" scale="${mesh_scale} ${mesh_scale} ${mesh_scale}" />
+	</geometry>
+	<!-- <material color="yellow"/> -->
+      </visual>
+      <collision>
+        <origin xyz="0.005  -0.04 0.08" rpy="0 0 0" />
+        <geometry>
+	  <cylinder length="${arm_fore_length}" radius="${arm_fore_radius}" />
+        </geometry>
+      </collision> 
+    </link>
+  </macro>
+
+</robot>
