@@ -19,7 +19,6 @@ A ROS Gazebo simulator for Happy Mini by Kosei Demura
 (1) Mini 1.0 (with a 2 DOF arm)  
   $ roslaunch mini_description mini1.0.launch  
   $ rosrun mini_control mini_control  
-
 (2) Mini 1.5 (with a 5 DOF arm)  
   $ roslaunch mini_description mini1.5.launch  
   $ rosrun mini_control mini_control  
