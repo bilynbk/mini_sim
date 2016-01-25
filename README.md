@@ -1,4 +1,5 @@
 A ROS Gazebo simulator for Happy Mini by Kosei Demura
+*** Happy Mini is a "kawaii" life-support robot based on the Kobuki base ***
 
 1. Environment  
   Ubuntu14.04 and ROS Iindigo
