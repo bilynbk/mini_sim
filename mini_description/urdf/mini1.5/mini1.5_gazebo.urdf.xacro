@@ -196,7 +196,7 @@
     <xacro:property name="max_angle" value="180" /> -->
 
 
-    <gazebo reference="lidar_link">
+    <gazebo reference="laser_link">
       <sensor type="ray" name="lidar">
         <always_on>true</always_on>
         <update_rate>40</update_rate>
@@ -222,7 +222,7 @@
           <alwaysOn>true</alwaysOn>
           <updateRate>40</updateRate>
           <topicName>scan</topicName>
-          <frameName>base_laser_link</frameName>
+          <frameName>laser_link</frameName>
         </plugin>
       </sensor>
     </gazebo>

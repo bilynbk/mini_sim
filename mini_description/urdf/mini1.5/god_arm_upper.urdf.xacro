@@ -9,16 +9,16 @@
   <property name="arm_upper_radius" value="0.009" />
   <property name="arm_upper_length" value="0.4" />
      
-  <!-- Define the torso -->
+  <!-- Define the upper arm -->
   <macro name="arm_upper" params="parent name">
     <joint name="shoulder_joint" type="revolute">
       <origin xyz="${arm_upper_offset_x} ${arm_upper_offset_y} ${arm_upper_offset_z}" rpy="0 0 0" />
       <axis xyz="0 1 0"/>
       <limit effort="1.0" lower="${-M_PI/2}" upper="0" velocity="1.571"/>
-      <parent link="${parent}_link"/>
-      <child link="${name}_link"/>
+      <parent link="torso_upper_link"/>
+      <child link="arm_upper_link"/>
     </joint>
-    <link name="${name}_link">
+    <link name="arm_upper_link">
       <inertial>
         <mass value="0.5" />
         <origin xyz="0 0 0" />
